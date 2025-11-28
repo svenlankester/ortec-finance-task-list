@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
@@ -52,7 +55,10 @@ public final class TaskList implements Runnable {
         String command = commandRest[0];
         switch (command) {
             case "show":
-                show();
+                show(false);
+                break;
+            case "today":
+                show(true);
                 break;
             case "add":
                 add(commandRest[1]);
@@ -75,15 +81,21 @@ public final class TaskList implements Runnable {
         }
     }
 
-    private void show() {
+    private void show(boolean showOnlyToday) {
+
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String date = formatter.format(new Date());
+
         for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
             out.println(project.getKey());
             for (Task task : project.getValue()) {
+                if (!showOnlyToday || task.getDeadline().equals(date))
                 out.printf("    [%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
             }
             out.println();
         }
     }
+
 
     private void add(String commandLine) {
         String[] subcommandRest = commandLine.split(" ", 2);

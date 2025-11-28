@@ -4,7 +4,7 @@ public final class Task {
     private final long id;
     private final String description;
     private boolean done;
-    private String deadline;
+    private String deadline = "";
 
     public Task(long id, String description, boolean done) {
         this.id = id;
@@ -32,7 +32,7 @@ public final class Task {
         this.deadline = deadline;
     }
 
-    public String getDeadline(String deadline) {
+    public String getDeadline() {
         return this.deadline;
     }
 }
