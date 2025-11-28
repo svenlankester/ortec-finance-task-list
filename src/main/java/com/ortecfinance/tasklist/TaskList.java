@@ -63,6 +63,9 @@ public final class TaskList implements Runnable {
             case "uncheck":
                 uncheck(commandRest[1]);
                 break;
+            case "deadline":
+                addDeadLine(commandRest[1]);
+                break;
             case "help":
                 help();
                 break;
@@ -89,8 +92,28 @@ public final class TaskList implements Runnable {
             addProject(subcommandRest[1]);
         } else if (subcommand.equals("task")) {
             String[] projectTask = subcommandRest[1].split(" ", 2);
+            // TODO add input error checking to avoid program crashing over minor error
             addTask(projectTask[0], projectTask[1]);
         }
+    }
+
+    private void addDeadLine(String commandLine) {
+        String[] subcommandRest = commandLine.split(" ", 2);
+
+        int id = Integer.parseInt(subcommandRest[0]);
+        String deadline = subcommandRest[1];
+
+        // TODO: refactor to getTaskByID function
+        for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
+            for (Task task : project.getValue()) {
+                if (task.getId() == id) {
+                    task.setDeadline(deadline);
+                    return;
+                }
+            }
+        }
+        out.printf("Could not find a task with an ID of %d.", id);
+        out.println();
     }
 
     private void addProject(String name) {
