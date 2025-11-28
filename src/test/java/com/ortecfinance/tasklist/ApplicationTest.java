@@ -3,6 +3,10 @@ package com.ortecfinance.tasklist;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
+import java.util.Date;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+
 
 import static java.lang.System.lineSeparator;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -89,6 +93,32 @@ public final class ApplicationTest {
                 "    [ ] 7: Outside-In TDD",
                 "    [ ] 8: Interaction-Driven Design",
                 ""
+        );
+
+        execute("quit");
+    }
+
+    @Test
+    void today_command() throws IOException {
+
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String date = formatter.format(new Date());
+
+        execute("add project todo");
+        execute("add task todo fix simple bug");
+        execute("add task todo accidentally take down cloudflare");
+        execute("add task todo push to prod on friday afternoon");
+        
+        // task 1 will have no deadline, 2 will have today as deadline and 3 will have unix time date
+        String todayCommand = "deadline 2 " + date;
+        execute(todayCommand);
+        execute("deadline 3 1-1-1970");
+
+        execute("today");
+        readLines(
+            "todo",
+            "    [ ] 2: accidentally take down cloudflare",
+            ""
         );
 
         execute("quit");
