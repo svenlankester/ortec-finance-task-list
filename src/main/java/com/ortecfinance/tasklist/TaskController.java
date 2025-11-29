@@ -36,4 +36,12 @@ public class TaskController {
         return "Task added: " + taskName;
     }
 
+    @PutMapping("/{projectName}/tasks/{taskId}")
+    public String updateTaskDeadline(@PathVariable String projectName, @PathVariable String taskId, @RequestParam String deadline) {
+        if (!taskManager.addDeadLine(Integer.parseInt(taskId), deadline)) {
+            return "Task with ID " + taskId +  " not found.";
+        }
+        return "Deadline updated for task " + taskId + " in project " + projectName;
+    }
+
 }
