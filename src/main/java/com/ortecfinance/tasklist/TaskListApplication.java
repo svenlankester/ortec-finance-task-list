@@ -7,13 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TaskListApplication {
 
     public static void main(String[] args) {
-        if (args.length == 0) {
+        if (args.length == 1) {
             System.out.println("Starting console Application");
             TaskListCLI.startConsole();
         }
         else {
             SpringApplication.run(TaskListApplication.class, args);
-            System.out.println("localhost:8080/tasks");
+            System.out.println("localhost:8080/projects");
         }
     }
 
