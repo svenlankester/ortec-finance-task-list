@@ -124,6 +124,37 @@ public final class ApplicationTest {
         execute("quit");
     }
 
+    @Test
+    void view_by_deadline_command() throws IOException {
+
+
+        execute("add project todo");
+        execute("add task todo fix simple bug");
+        execute("add task todo accidentally take down cloudflare");
+        execute("add task todo push to prod on friday afternoon");
+        execute("add task todo get burnout from amount of tasks");
+        
+        // task 1 will have no deadline, 2 will have today as deadline and 3 will have unix time date
+        execute("deadline 2 21-10-2025");
+        execute("deadline 3 1-1-1970");
+        execute("deadline 4 1-1-1970");
+
+        execute("view-by-deadline");
+        readLines(
+            "1-1-1970:",
+            "    [ ] 3: push to prod on friday afternoon",
+            "    [ ] 4: get burnout from amount of tasks",
+            "21-10-2025:",
+            "    [ ] 2: accidentally take down cloudflare",
+            "No deadline:",
+            "    [ ] 1: fix simple bug",
+            ""
+        );
+
+        execute("quit");
+    }
+
+
     private void execute(String command) throws IOException {
         read(PROMPT);
         write(command);

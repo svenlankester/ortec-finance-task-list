@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Date;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
@@ -60,6 +63,9 @@ public final class TaskList implements Runnable {
             case "today":
                 show(true);
                 break;
+            case "view-by-deadline":
+                viewByDeadline();
+                break;
             case "add":
                 add(commandRest[1]);
                 break;
@@ -81,9 +87,44 @@ public final class TaskList implements Runnable {
         }
     }
 
+
+    private void viewByDeadline() {
+        // make a deadline -> tasklist map
+        Map<String, List<Task>> deadlines = new LinkedHashMap<>();
+
+        for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
+            for (Task task : project.getValue()) {
+                String deadline = task.getDeadline();
+                if (deadline.equals("")) {
+                    deadline = "No deadline";
+                }
+                deadlines.computeIfAbsent(deadline, (k) -> new ArrayList<>()).add(task);
+            }
+        }
+
+        // sort list of keys
+        List<String> dates = new ArrayList<String>(deadlines.keySet());
+        // temporarily remove no deadline to sort by date & simultaneously checking if it existed in the first place
+        boolean hadNoDeadlineEntry = dates.remove("No deadline");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("d-M-yyyy");
+        dates.sort(Comparator.comparing(entry -> LocalDate.parse(entry, format)));
+        if (hadNoDeadlineEntry) {
+            dates.add("No deadline");
+        }
+
+        for (String deadline : dates) {
+            out.println(deadline + ":");
+            for (Task task : deadlines.get(deadline)) {
+                out.printf("    [%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
+            }
+        }
+        out.println();
+    }
+
     private void show(boolean showOnlyToday) {
 
-        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+        // get current date
+        Format formatter = new SimpleDateFormat("d-M-yyyy");
         String date = formatter.format(new Date());
 
         for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
