@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class TaskManager {
     private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
-    private int lastId = 0;
+    private long lastId = 0;
     
-    private Task getTaskByID(int id) {
+    private Task getTaskByID(long id) {
         for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
             for (Task task : project.getValue()) {
                 if (task.getId() == id) {
@@ -33,7 +33,7 @@ public class TaskManager {
         projectTasks.add(new Task(nextId(), description, false));
     }
 
-    public void addDeadLine(int id, String deadline) {
+    public void addDeadLine(long id, String deadline) {
         
         Task task = getTaskByID(id);
         if (task != null){
@@ -43,7 +43,7 @@ public class TaskManager {
         // TODO: add error messaging
     }
 
-    public void markTaskDone(int id, boolean done) {
+    public void markTaskDone(long id, boolean done) {
         Task task = getTaskByID(id);
         if (task != null){
             task.setDone(done);
