@@ -58,7 +58,7 @@ public class TaskManager {
     }
 
     public List<String> getProjects() {
-        return new List<String>(tasks.keySet());
+        return new ArrayList<String>(tasks.keySet());
     }
 
     private long nextId() {

@@ -101,7 +101,7 @@ public final class TaskListCLI implements Runnable {
         for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
             for (Task task : project.getValue()) {
                 String deadline = task.getDeadline();
-                if (deadline == null) {
+                if (deadline == "") {
                     deadline = "No deadline";
                 }
                 deadlines.computeIfAbsent(deadline, (k) -> new ArrayList<>()).add(task);
