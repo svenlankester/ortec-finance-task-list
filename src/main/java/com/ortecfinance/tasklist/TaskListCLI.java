@@ -68,13 +68,14 @@ public final class TaskListCLI implements Runnable {
                 processAddCommand(commandRest[1]);
                 break;
             case "check":
-                taskManager.markTaskDone(commandRest[1], true);
+                taskManager.markTaskDone(Integer.parseInt(commandRest[1]), true);
                 break;
             case "uncheck":
-                taskManager.markTaskDone(commandRest[1], false);
+                taskManager.markTaskDone(Integer.parseInt(commandRest[1]), false);
                 break;
             case "deadline":
-                taskManager.addDeadLine(commandRest[1]);
+                String[] subcommandRest = commandRest[1].split(" ", 2);
+                taskManager.addDeadLine(Integer.parseInt(subcommandRest[0]), subcommandRest[1]);
                 break;
             case "help":
                 help();

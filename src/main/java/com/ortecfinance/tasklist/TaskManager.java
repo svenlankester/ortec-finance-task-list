@@ -9,8 +9,7 @@ public class TaskManager {
     private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
     private int lastId = 0;
     
-    private Task getTaskByID(String idString) {
-        int id = Integer.parseInt(idString);
+    private Task getTaskByID(int id) {
         for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
             for (Task task : project.getValue()) {
                 if (task.getId() == id) {
@@ -34,12 +33,8 @@ public class TaskManager {
         projectTasks.add(new Task(nextId(), description, false));
     }
 
-    public void addDeadLine(String commandLine) {
-        String[] subcommandRest = commandLine.split(" ", 2);
-
-        String id = subcommandRest[0];
-        String deadline = subcommandRest[1];
-
+    public void addDeadLine(int id, String deadline) {
+        
         Task task = getTaskByID(id);
         if (task != null){
             task.setDeadline(deadline);
@@ -48,8 +43,8 @@ public class TaskManager {
         // TODO: add error messaging
     }
 
-    public void markTaskDone(String idString, boolean done) {
-        Task task = getTaskByID(idString);
+    public void markTaskDone(int id, boolean done) {
+        Task task = getTaskByID(id);
         if (task != null){
             task.setDone(done);
             return;
