@@ -1,3 +1,7 @@
+# Disclaimer
+
+I ended up having to skip optionals 2.2 (group by project after date) and 4.5 (GET endpoint for grouping by deadline) due to falling ill and running short on time. Especially implementing the latter one is fairly trivial so I will gladly elaborate on how to in the interview.
+
 # Task List
 
 You have been handed over an existing (fictional) codebase of a task list application. This application allows you to create projects, add tasks to those projects, check and uncheck them, and view tasks by project.
