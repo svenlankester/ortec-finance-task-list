@@ -68,14 +68,20 @@ public final class TaskListCLI implements Runnable {
                 processAddCommand(commandRest[1]);
                 break;
             case "check":
-                taskManager.markTaskDone(Integer.parseInt(commandRest[1]), true);
+                if (!taskManager.markTaskDone(Integer.parseInt(commandRest[1]), true)) {
+                    out.println("Task not found.");
+                }
                 break;
             case "uncheck":
-                taskManager.markTaskDone(Integer.parseInt(commandRest[1]), false);
+                if (!taskManager.markTaskDone(Integer.parseInt(commandRest[1]), false)) {
+                    out.println("Task not found.");
+                }
                 break;
             case "deadline":
                 String[] subcommandRest = commandRest[1].split(" ", 2);
-                taskManager.addDeadLine(Integer.parseInt(subcommandRest[0]), subcommandRest[1]);
+                if (!taskManager.addDeadLine(Integer.parseInt(subcommandRest[0]), subcommandRest[1])) {
+                    out.println("Task not found.");
+                }
                 break;
             case "help":
                 help();
@@ -145,8 +151,9 @@ public final class TaskListCLI implements Runnable {
             taskManager.addProject(subcommandRest[1]);
         } else if (subcommand.equals("task")) {
             String[] projectTask = subcommandRest[1].split(" ", 2);
-            // TODO add input error checking to avoid program crashing over minor error
-            taskManager.addTask(projectTask[0], projectTask[1]);
+            if(!taskManager.addTask(projectTask[0], projectTask[1])) {
+                out.println("Project name not found.");
+            }
         }
     }
     

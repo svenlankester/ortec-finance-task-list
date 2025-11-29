@@ -24,37 +24,41 @@ public class TaskManager {
         tasks.put(name, new ArrayList<Task>());
     }
 
-    public void addTask(String project, String description) {
+    public boolean addTask(String project, String description) {
         List<Task> projectTasks = tasks.get(project);
         if (projectTasks == null) {
-            // TODO: add error messaging
-            return;
+            return false;
         }
         projectTasks.add(new Task(nextId(), description, false));
+        return true;
     }
 
-    public void addDeadLine(long id, String deadline) {
+    public boolean addDeadLine(long id, String deadline) {
         
         Task task = getTaskByID(id);
         if (task != null){
             task.setDeadline(deadline);
-            return;
+            return true;
         }
-        // TODO: add error messaging
+        return false;
     }
 
-    public void markTaskDone(long id, boolean done) {
+    public boolean markTaskDone(long id, boolean done) {
         Task task = getTaskByID(id);
         if (task != null){
             task.setDone(done);
-            return;
+            return true;
         }
-        
+        return false;
     }
 
     // can improve in future by splitting this up to get task by project/deadline (introduces some complications)
     public Map<String, List<Task>> getTasks() {
         return tasks;
+    }
+
+    public List<String> getProjects() {
+        return new List<String>(tasks.keySet());
     }
 
     private long nextId() {
